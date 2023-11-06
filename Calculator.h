@@ -1,8 +1,8 @@
 #pragma once
 
+#include <numbers>
 #include <QWidget>
 #include <QLineEdit>
-#include <QLabel>
 #include <QMenu>
 #include <QEvent>
 #include <QGridLayout>
@@ -15,7 +15,7 @@ class Calculator : public QWidget
 
 public:
     Calculator(QWidget *parent = nullptr);
-    ~Calculator();
+    QString style;
 private slots:
     void digitClicked();
     void binaryOperatorClicked();
@@ -101,13 +101,6 @@ private:
     MyButton* tanhButton;
     MyButton* atanhButton;
     QGridLayout* mainLayout;
-    QString lineStyleSheet;
-    QString mainButtonStyle;
-    QString opButtonStyle;
-    QString memButtonStyle;
-    QString eqButtonStyle;
-    QString selButtonStyle;
-    QString specialButtonStyle;
     QString m_square_root = QChar(0x0000221A);
     QString m_squared = 'x' + QChar(0x000000b2);
     QString m_reciprocal = "1/x";

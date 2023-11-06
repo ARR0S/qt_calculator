@@ -1,6 +1,6 @@
-#include "Calculator.h"
 #include <QApplication>
 #include <QStyleFactory>
+#include "Calculator.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QPalette palette;
     palette.setColor(QPalette::Window, QColor("#212121")); // Цвет фона окна
     w.setPalette(palette);
-    w.setStyleSheet("background-color: #212121;");
+    w.setStyleSheet(w.style);
     w.show();
     return a.exec();
 }

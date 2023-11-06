@@ -1,7 +1,8 @@
 #include "Calculator.h"
+#include "cssstyles.h"
 
 Calculator::Calculator(QWidget *parent)
-    : QWidget(parent), m_sum_in_mem(0.0)
+    : QWidget(parent), m_sum_in_mem(0.0),style(backStyle)
 {
     m_display_down = new QLineEdit();
     m_display_down->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -19,76 +20,6 @@ Calculator::Calculator(QWidget *parent)
         m_digitButtons[i] = createButton(QString::number(i), SLOT(digitClicked()));
     }
     selectorButton = createButton(m_selector, SLOT(selectorClicked()));
-    lineStyleSheet = "QLineEdit {"
-        "    padding-right: 5px;"
-        "    background-color: #212121;"
-        "    color: #FFFFFF;"
-        "    font-weight: 600;"
-        "    border-style: none"
-        "}";
-    mainButtonStyle = "MyButton {"
-        "    background-color: #3E3E3E;"
-        "    color: #FFFFFF;"
-        "    font-weight: 600;"
-        "    font-size: 14pt;"
-        "    border-style: none"
-        "}"
-        "MyButton:hover {"
-        "    background-color: #343434;"
-        "}";
-    opButtonStyle = "MyButton {"
-        "    background-color: #343434;"
-        "    color: #FFFFFF;"
-        "    font-weight: 600;"
-        "    font-size: 12pt;"
-        "    border-style: none"
-        "}"
-        "MyButton:hover {"
-        "    background-color: #3E3E3E;"
-        "}";
-    memButtonStyle = "MyButton {"
-        "    background-color: #212121;"
-        "    color: #FFFFFF;"
-        "    font-weight: 600;"
-        "    font-size: 12pt;"
-        "    border-style: none"
-        "}"
-        "MyButton:hover {"
-        "    background-color: #343434;"
-        "}";
-    eqButtonStyle = "MyButton {"
-        "    background-color: #49BAEF;"
-        "    color: #000000;"
-        "    font-weight: 600;"
-        "    font-size: 16pt;"
-        "    border-style: none"
-        "}"
-        "MyButton:hover {"
-        "    background-color: #8BCDEC;"
-        "}";
-    specialButtonStyle = "MyButton {"
-        "    background-color: #49BAEF;"
-        "    color: #000000;"
-        "    font-weight: 600;"
-        "    font-size: 12pt;"
-        "    border-style: none"
-        "}"
-        "MyButton:hover {"
-        "    background-color: #8BCDEC;"
-        "}";
-    selButtonStyle = "MyButton {"
-        "    background-color: #212121;"
-        "    color: #FFFFFF;"
-        "    font-weight: 600;"
-        "    font-size: 16pt;"
-        "    border-style: none;"
-        "    width: 1pt;"
-        "    height: 15pt;"
-        "}"
-        "MyButton:hover {"
-        "    background-color: #3E3E3E;"
-        "}";
-
     pointButton = createButton(",", SLOT(pointClicked()));
     changeSignButton = createButton(m_change, SLOT(changeSignClicked()));
     backspaceButton = createButton(m_backspace, SLOT(backspaceClicked()));
@@ -139,19 +70,40 @@ Calculator::Calculator(QWidget *parent)
     acoshButton = createButton("acosh", SLOT(trigOperatorClicked()));
     tanhButton = createButton("tanh", SLOT(trigOperatorClicked()));
     atanhButton = createButton("atanh", SLOT(trigOperatorClicked()));
-    mainLayout = new QGridLayout;
-    mainLayout->setSpacing(2);
     powButton->setLayout(new QVBoxLayout);
     tenxButton->setLayout(new QVBoxLayout);
     exButton->setLayout(new QVBoxLayout);
     twoxButton->setLayout(new QVBoxLayout);
     rootButton->setLayout(new QVBoxLayout);
     logButton->setLayout(new QVBoxLayout);
+    QLabel* pow = new QLabel("x<sup>y</sup>");
+    pow->setStyleSheet(sheet);
+    pow->setAlignment(Qt::AlignCenter);
+    powButton->layout()->addWidget(pow);
+    QLabel* root = new QLabel("<p><sup>y</sup>&radic;x</p>");
+    root->setStyleSheet(sheet);
+    root->setAlignment(Qt::AlignCenter);
+    rootButton->layout()->addWidget(root);
+    QLabel* log = new QLabel("<p>log<sub>y</sub><span>x</span></p>");
+    log->setStyleSheet(sheet);
+    log->setAlignment(Qt::AlignCenter);
+    logButton->layout()->addWidget(log);
+    QLabel* tenx = new QLabel("10<sup>x</sup>");
+    tenx->setStyleSheet(sheet);
+    tenx->setAlignment(Qt::AlignCenter);
+    tenxButton->layout()->addWidget(tenx);
+    QLabel* twox = new QLabel("2<sup>x</sup>");
+    twox->setStyleSheet(sheet);
+    twox->setAlignment(Qt::AlignCenter);
+    twoxButton->layout()->addWidget(twox);
+    QLabel* ex = new QLabel("e<sup>x</sup>");
+    ex->setStyleSheet(sheet);
+    ex->setAlignment(Qt::AlignCenter);
+    exButton->layout()->addWidget(ex);
+    mainLayout = new QGridLayout;
+    mainLayout->setSpacing(2);
     setStandart();
 }
-
-Calculator::~Calculator()
-{}
 
 void Calculator::digitClicked()
 {
@@ -160,7 +112,11 @@ void Calculator::digitClicked()
         m_binary_op_before_equal = false;
     }
     digit_clicked = true;
-    MyButton* btn = dynamic_cast<MyButton*>(sender());
+    MyButton* btn = qobject_cast<MyButton*>(sender());
+    if (btn==nullptr)
+    {
+        return;
+    }
     int digit = btn->text().toUInt();
     if (exp_clicked and digit == 0)
     {
@@ -210,7 +166,11 @@ void Calculator::binaryOperatorClicked()
     m_after_binary_op = true;
     m_binary_op_before_equal = true;
     equal_clicked = false;
-    MyButton* btn = dynamic_cast<MyButton*>(sender());
+    MyButton* btn = qobject_cast<MyButton*>(sender());
+    if (btn == nullptr)
+    {
+        return;
+    }
     m_double_op = btn->text();
     if (!digit_clicked)
     {
@@ -283,7 +243,11 @@ void Calculator::unaryOperatorClicked()
     }
     equal_clicked = false;
     exp_clicked = false;
-    MyButton* btn = dynamic_cast<MyButton*>(sender());
+    MyButton* btn = qobject_cast<MyButton*>(sender());
+    if (btn == nullptr)
+    {
+        return;
+    }
     m_unary_op = btn->text();
     QString upper = m_display_up->text();
     if (m_unary_op == m_square_root)
@@ -1034,7 +998,7 @@ void Calculator::exClicked()
     {
         m_display_up->setText(upper + "e^" + m_display_down->text());
     }
-    m_display_down->setText(QString::number(std::pow(2.71828182845904523536, m_display_down->text().toDouble())));
+    m_display_down->setText(QString::number(std::pow(std::numbers::e, m_display_down->text().toDouble())));
     if (m_display_down->text() == "inf")
     {
         m_display_up->clear();
@@ -1260,9 +1224,7 @@ void Calculator::minToMemory()
 void Calculator::selectorClicked()
 {
     QMenu menu("Calculator Modes", selectorButton);
-    menu.setStyleSheet("QMenu { menu-scrollable: 1; width: 98px; background-color:#343434; font-size: 15pt }"
-        "QMenu:item { color: white; margin-left: -1px;}"
-        "QMenu:item:selected { color: white; background-color: #3E3E3E; }");
+    menu.setStyleSheet(menuStyle);
     QAction* actionBasic = new QAction("Basic", &menu);
     QAction* actionAdvanced = new QAction("Advanced", &menu);
     QObject::connect(actionBasic, &QAction::triggered, [&]() {
@@ -1348,13 +1310,13 @@ void Calculator::trigOperatorClicked()
         m_display_up->clear();
     }
     double num = m_display_down->text().toDouble();
-    if (std::fmod(num, 3.14159) == 0 and num> 3.14159)
-    {
-        num = num / 3.14159 * 3.14159265358979323846;
-    }
     equal_clicked = false;
     exp_clicked = false;
-    MyButton* btn = dynamic_cast<MyButton*>(sender());
+    MyButton* btn = qobject_cast<MyButton*>(sender());
+    if (btn == nullptr)
+    {
+        return;
+    }
     m_unary_op = btn->text();
     QString upper = m_display_up->text();
     if (m_unary_op == "sin")
@@ -1386,7 +1348,7 @@ void Calculator::trigOperatorClicked()
         if (degRadButton->text() == "RAD")
             m_display_down->setText(QString::number(std::sin(num)));
         else
-            m_display_down->setText(QString::number(std::sin(num * 3.141592653589793 / 180.0)));
+            m_display_down->setText(QString::number(std::sin(num * std::numbers::pi / 180.0)));
     }
     else if (m_unary_op == "cos")
     {
@@ -1417,7 +1379,7 @@ void Calculator::trigOperatorClicked()
         if (degRadButton->text() == "RAD")
             m_display_down->setText(QString::number(std::cos(num)));
         else
-            m_display_down->setText(QString::number(std::cos(num * 3.141592653589793 / 180.0)));
+            m_display_down->setText(QString::number(std::cos(std::numbers::pi / 180.0)));
     }
     else if (m_unary_op == "tan")
     {
@@ -1448,7 +1410,7 @@ void Calculator::trigOperatorClicked()
         if (degRadButton->text() == "RAD")
             m_display_down->setText(QString::number(std::tan(num)));
         else
-            m_display_down->setText(QString::number(std::tan(num * 3.141592653589793 / 180.0)));
+            m_display_down->setText(QString::number(std::tan(num * std::numbers::pi / 180.0)));
     }
     else if (m_unary_op == "sinh")
     {
@@ -1842,12 +1804,16 @@ void Calculator::hipClicked()
 
 void Calculator::constClicked()
 {
-    MyButton* btn = dynamic_cast<MyButton*>(sender());
+    MyButton* btn = qobject_cast<MyButton*>(sender());
+    if (btn == nullptr)
+    {
+        return;
+    }
     if (btn->text() == m_pi)
     {
-        m_display_down->setText(QString::number(3.14159265358979323846));
+        m_display_down->setText(QString::number(std::numbers::pi));
     }
-    else m_display_down->setText(QString::number(2.71828182845904523536));
+    else m_display_down->setText(QString::number(std::numbers::e));
 }
 
 void Calculator::degRadClicked()
@@ -1918,8 +1884,8 @@ void Calculator::setStandart()
     clearButton->show();
     mainLayout->addWidget(m_display_up, 1, 0, 1, 4);
     mainLayout->addWidget(m_display_down, 2, 0, 2, 4);
-    m_display_down->setStyleSheet(lineStyleSheet + QString("QLineEdit{height: 80px; font-size: 34pt}"));
-    m_display_up->setStyleSheet(lineStyleSheet + QString("QLineEdit{height: 30px; font-size: 10pt; color: #A1A4AA ;}"));
+    m_display_down->setStyleSheet(displayDStyle);
+    m_display_up->setStyleSheet(displayUStyle);
     mainLayout->addWidget(backspaceButton, 5, 2);
     mainLayout->addWidget(clearButton, 5, 0);
     mainLayout->addWidget(clearAllSignButton, 5, 1);
@@ -1989,8 +1955,8 @@ void Calculator::setAdvanced()
     changeSignButton->show();
     mainLayout->addWidget(m_display_up, 1, 0, 1, 5);
     mainLayout->addWidget(m_display_down, 2, 0, 2, 5);
-    m_display_down->setStyleSheet(lineStyleSheet + QString("QLineEdit{height: 80px; font-size: 34pt}"));
-    m_display_up->setStyleSheet(lineStyleSheet + QString("QLineEdit{height: 30px; font-size: 10pt; color: #A1A4AA ;}"));
+    m_display_down->setStyleSheet(displayDStyle);
+    m_display_up->setStyleSheet(displayUStyle);
     mainLayout->addWidget(backspaceButton, 6, 4);
     mainLayout->addWidget(clearButton, 5, 3);
     mainLayout->addWidget(asinButton, 5, 3);
@@ -2094,49 +2060,14 @@ void Calculator::setAdvanced()
     acoshButton->setStyleSheet(opButtonStyle);
     atanhButton->setStyleSheet(opButtonStyle);
     hipButton->setStyleSheet(opButtonStyle);
-    QString sheet = "QLabel {"
-        "  background-color: transparent;"
-        "  color: white;"
-        "  font-size: 12pt;"
-        "  font-weight: 600;"
-        "  border: none;"
-        "}"
-        "sub {"
-        "  font-size: 60%;"
-        "  vertical-align: super;"
-        "}";
-    QLabel* pow = new QLabel("x<sup>y</sup>");
-    pow->setStyleSheet(sheet);
-    pow->setAlignment(Qt::AlignCenter);
-    powButton->layout()->addWidget(pow);
-    powButton->setStyleSheet(opButtonStyle);
-    QLabel* root = new QLabel("<p><sup>y</sup>&radic;x</p>");
-    root->setStyleSheet(sheet);
-    root->setAlignment(Qt::AlignCenter);
-    rootButton->layout()->addWidget(root);
-    rootButton->setStyleSheet(opButtonStyle);
-    QLabel* log = new QLabel("<p>log<sub>y</sub><span>x</span></p>");
-    log->setStyleSheet(sheet);
-    log->setAlignment(Qt::AlignCenter);
-    logButton->layout()->addWidget(log);
-    logButton->setStyleSheet(opButtonStyle);
-    QLabel* tenx = new QLabel("10<sup>x</sup>");
-    tenx->setStyleSheet(sheet);
-    tenx->setAlignment(Qt::AlignCenter);
-    tenxButton->layout()->addWidget(tenx);
-    tenxButton->setStyleSheet(opButtonStyle);
-    QLabel* twox = new QLabel("2<sup>x</sup>");
-    twox->setStyleSheet(sheet);
-    twox->setAlignment(Qt::AlignCenter);
-    twoxButton->layout()->addWidget(twox);
-    twoxButton->setStyleSheet(opButtonStyle);
-    QLabel* ex = new QLabel("e<sup>x</sup>");
-    ex->setStyleSheet(sheet);
-    ex->setAlignment(Qt::AlignCenter);
-    exButton->layout()->addWidget(ex);
     exButton->setStyleSheet(opButtonStyle);
     lgButton->setStyleSheet(opButtonStyle);
     lnButton->setStyleSheet(opButtonStyle);
+    powButton->setStyleSheet(opButtonStyle);
+    rootButton->setStyleSheet(opButtonStyle);
+    logButton->setStyleSheet(opButtonStyle);
+    tenxButton->setStyleSheet(opButtonStyle);
+    twoxButton->setStyleSheet(opButtonStyle);
     changeSignButton->setStyleSheet(mainButtonStyle);
     setLayout(mainLayout);
     setWindowTitle("Calculator (Advanced)");
@@ -2147,10 +2078,6 @@ void Calculator::clearLayout(QLayout* layout)
     QLayoutItem* item;
     while ((item = layout->takeAt(0)) != nullptr)
     {
-        if (QLayout* childLayout = item->widget()->layout())
-        {
-            clearLayout(childLayout);
-        }
         if (QWidget* widget = item->widget())
         {
             layout->removeWidget(widget);
