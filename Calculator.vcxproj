@@ -105,11 +105,13 @@
     <QtMoc Include="MyButton.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cssstyles.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Calculator.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="StyleSheet.css" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

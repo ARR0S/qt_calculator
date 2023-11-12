@@ -1,11 +1,11 @@
 #include "Calculator.h"
-#include "cssstyles.h"
 
 Calculator::Calculator(QWidget *parent)
-    : QWidget(parent), m_sum_in_mem(0.0),style(backStyle)
+    : QWidget(parent), m_sum_in_mem(0.0)
 {
     m_display_down = new QLineEdit();
     m_display_down->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    m_display_down->setObjectName("m_display_down");
     m_display_up = new QLineEdit();
     m_display_up->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     m_display_down->setReadOnly(1);
@@ -18,6 +18,7 @@ Calculator::Calculator(QWidget *parent)
     for (int i = 0; i < 10; ++i)
     {
         m_digitButtons[i] = createButton(QString::number(i), SLOT(digitClicked()));
+        m_digitButtons[i]->setObjectName("mainButton");
     }
     selectorButton = createButton(m_selector, SLOT(selectorClicked()));
     pointButton = createButton(",", SLOT(pointClicked()));
@@ -70,34 +71,37 @@ Calculator::Calculator(QWidget *parent)
     acoshButton = createButton("acosh", SLOT(trigOperatorClicked()));
     tanhButton = createButton("tanh", SLOT(trigOperatorClicked()));
     atanhButton = createButton("atanh", SLOT(trigOperatorClicked()));
+    pointButton->setObjectName("mainButton");
+    changeSignButton->setObjectName("mainButton");
+    clearMemoryButton->setObjectName("MemoryButton");
+    readMemoryButton->setObjectName("MemoryButton");
+    addMemoryButton->setObjectName("MemoryButton");
+    minToMemoryButton->setObjectName("MemoryButton");
+    selectorButton->setObjectName("selector");
+    degRadButton->setObjectName("MemoryButton");
+    equalButton->setObjectName("equalButton");
     powButton->setLayout(new QVBoxLayout);
     tenxButton->setLayout(new QVBoxLayout);
     exButton->setLayout(new QVBoxLayout);
     twoxButton->setLayout(new QVBoxLayout);
     rootButton->setLayout(new QVBoxLayout);
     logButton->setLayout(new QVBoxLayout);
-    QLabel* pow = new QLabel("x<sup>y</sup>");
-    pow->setStyleSheet(sheet);
+    pow = new QLabel("x<sup>y</sup>");
     pow->setAlignment(Qt::AlignCenter);
     powButton->layout()->addWidget(pow);
-    QLabel* root = new QLabel("<p><sup>y</sup>&radic;x</p>");
-    root->setStyleSheet(sheet);
+    root = new QLabel("<p><sup>y</sup>&radic;x</p>");
     root->setAlignment(Qt::AlignCenter);
     rootButton->layout()->addWidget(root);
-    QLabel* log = new QLabel("<p>log<sub>y</sub><span>x</span></p>");
-    log->setStyleSheet(sheet);
+    log = new QLabel("<p>log<sub>y</sub><span>x</span></p>");
     log->setAlignment(Qt::AlignCenter);
     logButton->layout()->addWidget(log);
-    QLabel* tenx = new QLabel("10<sup>x</sup>");
-    tenx->setStyleSheet(sheet);
+    tenx = new QLabel("10<sup>x</sup>");
     tenx->setAlignment(Qt::AlignCenter);
     tenxButton->layout()->addWidget(tenx);
-    QLabel* twox = new QLabel("2<sup>x</sup>");
-    twox->setStyleSheet(sheet);
+    twox = new QLabel("2<sup>x</sup>");
     twox->setAlignment(Qt::AlignCenter);
     twoxButton->layout()->addWidget(twox);
-    QLabel* ex = new QLabel("e<sup>x</sup>");
-    ex->setStyleSheet(sheet);
+    ex = new QLabel("e<sup>x</sup>");
     ex->setAlignment(Qt::AlignCenter);
     exButton->layout()->addWidget(ex);
     mainLayout = new QGridLayout;
@@ -1224,7 +1228,6 @@ void Calculator::minToMemory()
 void Calculator::selectorClicked()
 {
     QMenu menu("Calculator Modes", selectorButton);
-    menu.setStyleSheet(menuStyle);
     QAction* actionBasic = new QAction("Basic", &menu);
     QAction* actionAdvanced = new QAction("Advanced", &menu);
     QObject::connect(actionBasic, &QAction::triggered, [&]() {
@@ -1264,7 +1267,8 @@ void Calculator::trigClicked()
         asinButton->show();
         atanButton->show();
         hipButton -> show();
-        trigonometryButton->setStyleSheet(specialButtonStyle);
+        trigonometryButton->setObjectName("specButton");
+        trigonometryButton->setStyleSheet("MyButton#specButton");
         trig_clicked = true;
     }
     else
@@ -1288,8 +1292,10 @@ void Calculator::trigClicked()
         asinhButton->hide();
         atanhButton->hide();
         hipButton->hide();
-        trigonometryButton->setStyleSheet(opButtonStyle);
-        hipButton->setStyleSheet(opButtonStyle);
+        trigonometryButton->setObjectName("");
+        hipButton->setObjectName("");
+        trigonometryButton->setStyleSheet("MyButton");
+        hipButton->setStyleSheet("MyButton");
         hip_clicked = false;
         trig_clicked = false;
     }
@@ -1742,7 +1748,8 @@ void Calculator::sec1Clicked()
         twoxButton->show();
         logButton->show();
         exButton->show();
-        sec1Button->setStyleSheet(specialButtonStyle);
+        sec1Button->setObjectName("specButton");
+        sec1Button->setStyleSheet("MyButton#specButton");
         sec1_clicked = true;
     }
     else
@@ -1759,7 +1766,8 @@ void Calculator::sec1Clicked()
         tenxButton->show();
         lgButton->show();
         lnButton->show();
-        sec1Button->setStyleSheet(opButtonStyle);
+        sec1Button->setObjectName("");
+        sec1Button->setStyleSheet("MyButton");
         sec1_clicked = false;
     }
 }
@@ -1780,7 +1788,8 @@ void Calculator::hipClicked()
         acoshButton->show();
         asinhButton->show();
         atanhButton->show();
-        hipButton->setStyleSheet(specialButtonStyle);
+        hipButton->setObjectName("specButton");
+        hipButton->setStyleSheet("MyButton#specButton");
         hip_clicked = true;
     }
     else
@@ -1797,7 +1806,8 @@ void Calculator::hipClicked()
         acoshButton->hide();
         asinhButton->hide();
         atanhButton->hide();
-        hipButton->setStyleSheet(opButtonStyle);
+        hipButton->setObjectName("");
+        hipButton->setStyleSheet("MyButton");
         hip_clicked = false;
     }
 }
@@ -1884,8 +1894,6 @@ void Calculator::setStandart()
     clearButton->show();
     mainLayout->addWidget(m_display_up, 1, 0, 1, 4);
     mainLayout->addWidget(m_display_down, 2, 0, 2, 4);
-    m_display_down->setStyleSheet(displayDStyle);
-    m_display_up->setStyleSheet(displayUStyle);
     mainLayout->addWidget(backspaceButton, 5, 2);
     mainLayout->addWidget(clearButton, 5, 0);
     mainLayout->addWidget(clearAllSignButton, 5, 1);
@@ -1911,27 +1919,6 @@ void Calculator::setStandart()
     mainLayout->addWidget(plusButton, 8, 3);
     mainLayout->addWidget(selectorButton, 0, 0);
     mainLayout->addWidget(selectorButton, 0, 0);
-    for (int i = 0; i < 10; ++i)
-    {
-        m_digitButtons[i]->setStyleSheet(mainButtonStyle);
-    }
-    pointButton->setStyleSheet(mainButtonStyle);
-    backspaceButton->setStyleSheet(opButtonStyle);
-    clearButton->setStyleSheet(opButtonStyle);
-    clearAllSignButton->setStyleSheet(opButtonStyle);
-    clearMemoryButton->setStyleSheet(memButtonStyle);
-    readMemoryButton->setStyleSheet(memButtonStyle);
-    addMemoryButton->setStyleSheet(memButtonStyle);
-    minToMemoryButton->setStyleSheet(memButtonStyle);
-    divisionButton->setStyleSheet(opButtonStyle);
-    timesButton->setStyleSheet(opButtonStyle);
-    minusButton->setStyleSheet(opButtonStyle);
-    plusButton->setStyleSheet(opButtonStyle);
-    squareRootButton->setStyleSheet(opButtonStyle);
-    squaredButton->setStyleSheet(opButtonStyle);
-    reciprocalButton->setStyleSheet(opButtonStyle);
-    equalButton->setStyleSheet(eqButtonStyle);
-    selectorButton->setStyleSheet(selButtonStyle);
     setLayout(mainLayout);
     setWindowTitle("Calculator (Basic)");
 };
@@ -1955,8 +1942,6 @@ void Calculator::setAdvanced()
     changeSignButton->show();
     mainLayout->addWidget(m_display_up, 1, 0, 1, 5);
     mainLayout->addWidget(m_display_down, 2, 0, 2, 5);
-    m_display_down->setStyleSheet(displayDStyle);
-    m_display_up->setStyleSheet(displayUStyle);
     mainLayout->addWidget(backspaceButton, 6, 4);
     mainLayout->addWidget(clearButton, 5, 3);
     mainLayout->addWidget(asinButton, 5, 3);
@@ -2015,60 +2000,6 @@ void Calculator::setAdvanced()
     mainLayout->addWidget(logButton, 10, 0);
     mainLayout->addWidget(exButton, 11, 0);
     sec1_clicked = false;
-    for (int i = 0; i < 10; ++i)
-    {
-        m_digitButtons[i]->setStyleSheet(mainButtonStyle);
-    }
-    pointButton->setStyleSheet(mainButtonStyle);
-    backspaceButton->setStyleSheet(opButtonStyle);
-    clearButton->setStyleSheet(opButtonStyle);
-    clearAllSignButton->setStyleSheet(opButtonStyle);
-    clearMemoryButton->setStyleSheet(memButtonStyle);
-    readMemoryButton->setStyleSheet(memButtonStyle);
-    addMemoryButton->setStyleSheet(memButtonStyle);
-    minToMemoryButton->setStyleSheet(memButtonStyle);
-    divisionButton->setStyleSheet(opButtonStyle);
-    timesButton->setStyleSheet(opButtonStyle);
-    minusButton->setStyleSheet(opButtonStyle);
-    plusButton->setStyleSheet(opButtonStyle);
-    squareRootButton->setStyleSheet(opButtonStyle);
-    squaredButton->setStyleSheet(opButtonStyle);
-    reciprocalButton->setStyleSheet(opButtonStyle);
-    equalButton->setStyleSheet(eqButtonStyle);
-    selectorButton->setStyleSheet(selButtonStyle);
-    degRadButton->setStyleSheet(memButtonStyle);
-    sec1Button->setStyleSheet(opButtonStyle);
-    trigonometryButton->setStyleSheet(opButtonStyle);
-    absButton->setStyleSheet(opButtonStyle);
-    modButton->setStyleSheet(opButtonStyle);
-    factButton->setStyleSheet(opButtonStyle);
-    expButton->setStyleSheet(opButtonStyle);
-    eButton->setStyleSheet(opButtonStyle);
-    piButton->setStyleSheet(opButtonStyle);
-    cubeButton->setStyleSheet(opButtonStyle);
-    cubeRootButton->setStyleSheet(opButtonStyle);
-    sinButton->setStyleSheet(opButtonStyle);
-    cosButton->setStyleSheet(opButtonStyle);
-    tanButton->setStyleSheet(opButtonStyle);
-    asinButton->setStyleSheet(opButtonStyle);
-    acosButton->setStyleSheet(opButtonStyle);
-    atanButton->setStyleSheet(opButtonStyle);
-    sinhButton->setStyleSheet(opButtonStyle);
-    coshButton->setStyleSheet(opButtonStyle);
-    tanhButton->setStyleSheet(opButtonStyle);
-    asinhButton->setStyleSheet(opButtonStyle);
-    acoshButton->setStyleSheet(opButtonStyle);
-    atanhButton->setStyleSheet(opButtonStyle);
-    hipButton->setStyleSheet(opButtonStyle);
-    exButton->setStyleSheet(opButtonStyle);
-    lgButton->setStyleSheet(opButtonStyle);
-    lnButton->setStyleSheet(opButtonStyle);
-    powButton->setStyleSheet(opButtonStyle);
-    rootButton->setStyleSheet(opButtonStyle);
-    logButton->setStyleSheet(opButtonStyle);
-    tenxButton->setStyleSheet(opButtonStyle);
-    twoxButton->setStyleSheet(opButtonStyle);
-    changeSignButton->setStyleSheet(mainButtonStyle);
     setLayout(mainLayout);
     setWindowTitle("Calculator (Advanced)");
 };

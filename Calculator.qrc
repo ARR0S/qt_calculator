@@ -1,4 +1,5 @@
-<RCC>
+<!DOCTYPE RCC><RCC version="1.0">
     <qresource prefix="Calculator">
+        <file>./StyleSheet.css</file>
     </qresource>
 </RCC>

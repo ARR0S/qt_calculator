@@ -7,6 +7,8 @@
 #include <QEvent>
 #include <QGridLayout>
 #include <QRegularExpression>
+#include <QResource>
+#include <QLabel>
 #include "MyButton.h"
 
 class Calculator : public QWidget
@@ -15,7 +17,6 @@ class Calculator : public QWidget
 
 public:
     Calculator(QWidget *parent = nullptr);
-    QString style;
 private slots:
     void digitClicked();
     void binaryOperatorClicked();
@@ -118,6 +119,12 @@ private:
     QString m_cube_root = QChar(0x0000221B);
     QString m_lg = "log(x)";
     QString m_ln = "ln(x)";
+    QLabel* pow;
+    QLabel* root;
+    QLabel* log;
+    QLabel* tenx;
+    QLabel* twox;
+    QLabel* ex;
     bool m_after_binary_op = false;
     bool m_binary_op_before_equal = false;
     bool m_after_unary_op = false;
