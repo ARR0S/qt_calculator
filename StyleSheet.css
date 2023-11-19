@@ -1,0 +1,123 @@
+QLineEdit {
+    height: 30px;
+    font-size: 14pt;
+    color: #A1A4AA;
+    padding-right: 5px;
+    background-color: #212121;
+    font-weight: 600;
+    border-style: none
+}
+
+MyButton {
+    background-color: #343434;
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 12pt;
+    border-style: none;
+}
+
+    MyButton:hover {
+        background-color: #3E3E3E;
+    }
+
+QLabel {
+    background-color: transparent;
+    color: white;
+    font-size: 12pt;
+    font-weight: 600;
+    border: none;
+}
+
+sub {
+    font-size: 60%;
+    vertical-align: super;
+}
+
+QMenu {
+    menu-scrollable: 1;
+    width: 98px;
+    background-color: #343434;
+    font-size: 15pt;
+}
+
+    QMenu:item {
+        color: white;
+        margin-left: -1px;
+    }
+
+        QMenu:item:selected {
+            color: white;
+            background-color: #3E3E3E;
+        }
+
+QLineEdit#m_display_down {
+    height: 80px;
+    font-size: 34pt;
+    padding-right: 5px;
+    background-color: #212121;
+    color: #FFFFFF;
+    font-weight: 600;
+    border-style: none
+}
+
+MyButton#mainButton {
+    background-color: #3E3E3E;
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 14pt;
+    border-style: none;
+}
+
+    MyButton#mainButton:hover {
+        background-color: #343434;
+    }
+
+MyButton#selector {
+    background-color: #212121;
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 16pt;
+    border-style: none;
+    width: 1pt;
+    height: 15pt;
+}
+
+MyButton#selector:hover {
+    background-color: #3E3E3E;
+}
+
+MyButton#MemoryButton {
+    background-color: #212121;
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 12pt;
+    border-style: none;
+}
+
+MyButton#MemoryButton:hover {
+    background-color: #343434;
+}
+
+MyButton#equalButton {
+background-color: #49BAEF;
+color: #000000;
+font-weight: 600;
+font-size: 16pt;
+border-style: none;
+}
+
+MyButton#equalButton:hover {
+    background-color: #8BCDEC;
+}
+
+MyButton#specButton {
+    background-color: #49BAEF;
+    color: #000000;
+    font-weight: 600;
+    font-size: 12pt;
+    border-style: none;
+}
+
+MyButton#specButton:hover {
+    background-color: #8BCDEC;
+}
